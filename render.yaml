@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: resume-lens
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false        # you paste the value in the Render dashboard
+      - key: GEMINI_MODEL
+        value: gemini-3.6-flash

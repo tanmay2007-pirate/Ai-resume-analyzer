@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resume Lens | AI Resume Analyzer</title>
+  <meta name="description" content="Upload your resume and a job description to see your ATS match score, missing skills and exact fixes.">
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="hero">
+    <nav class="nav" aria-label="Main">
+      <a class="brand" href="/" aria-label="Resume Lens home">
+        <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#5B5CF6"/><circle cx="15" cy="15" r="6" fill="none" stroke="#fff" stroke-width="2.4"/><path d="M19.5 19.5 25 25" stroke="#34D399" stroke-width="2.8" stroke-linecap="round"/></svg>
+        <span>Resume Lens</span>
+      </a>
+      <a class="nav-link" href="#tool">Analyze a resume</a>
+    </nav>
+
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1>See your resume the way an ATS does</h1>
+        <p class="lead">Upload your resume and the job you want. In seconds you get a match score, the skills you are missing, and the exact fixes to make before you apply.</p>
+        <a class="btn btn-primary" href="#tool">Check my resume</a>
+        <ul class="hero-points">
+          <li>PDF and DOCX supported</li>
+          <li>Nothing is stored after analysis</li>
+          <li>Free to use</li>
+        </ul>
+      </div>
+
+      <div class="scan" aria-hidden="true">
+        <div class="sheet">
+          <div class="sheet-name"></div>
+          <div class="sheet-line w70"></div>
+          <div class="sheet-line w50"></div>
+          <div class="sheet-gap"></div>
+          <div class="sheet-row"><span class="tag hit">Python</span><span class="tag hit">React</span><span class="tag miss">Docker</span></div>
+          <div class="sheet-line w90"></div>
+          <div class="sheet-line w80"></div>
+          <div class="sheet-line w60"></div>
+          <div class="sheet-gap"></div>
+          <div class="sheet-row"><span class="tag hit">SQL</span><span class="tag miss">AWS</span><span class="tag hit">Git</span></div>
+          <div class="sheet-line w85"></div>
+          <div class="sheet-line w55"></div>
+          <div class="beam"></div>
+        </div>
+        <div class="float-score"><strong>82</strong><span>ATS match</span></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="tool" id="tool" aria-labelledby="tool-title">
+      <div class="panel">
+        <h2 id="tool-title">Analyze your resume</h2>
+        <form id="form" novalidate>
+          <div class="fields">
+            <div class="field">
+              <span class="field-label" id="resume-label">Resume</span>
+              <label class="drop" id="drop" for="resume">
+                <input id="resume" name="resume" type="file" accept=".pdf,.docx" />
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+                <span class="drop-title" id="drop-title">Drop your resume here or browse</span>
+                <span class="drop-hint" id="drop-hint">PDF or DOCX, up to 5 MB</span>
+              </label>
+            </div>
+            <div class="field">
+              <div class="label-row">
+                <label for="jd">Job description</label>
+                <button type="button" class="link-btn" id="sample-jd">Use a sample</button>
+              </div>
+              <textarea id="jd" name="job_description" rows="9" placeholder="Paste the full job description here, including requirements and responsibilities."></textarea>
+            </div>
+          </div>
+
+          <div class="actions">
+            <label class="toggle" id="ai-toggle-wrap" hidden>
+              <input type="checkbox" id="use-ai">
+              <span class="switch" aria-hidden="true"></span>
+              <span>Add AI-written tips</span>
+            </label>
+            <button class="btn btn-primary" id="submit" type="submit">
+              <span class="spinner" aria-hidden="true"></span>
+              <span id="submit-label">Analyze resume</span>
+            </button>
+          </div>
+          <p class="error" id="error" role="alert" hidden></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="results" id="results" aria-live="polite" hidden>
+      <div class="results-inner">
+        <div class="summary card">
+          <div class="ring-wrap">
+            <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="ring-bg" cx="60" cy="60" r="52"/>
+              <circle class="ring-fg" id="ring-fg" cx="60" cy="60" r="52"/>
+            </svg>
+            <div class="ring-text"><strong id="score">0</strong><span>out of 100</span></div>
+          </div>
+          <div class="summary-text">
+            <h2 id="verdict"></h2>
+            <p id="verdict-sub"></p>
+            <p class="delta" id="delta" hidden></p>
+            <div class="summary-actions">
+              <button class="btn btn-ghost" id="print" type="button">Save as PDF</button>
+              <button class="btn btn-ghost" id="recheck" type="button">Check a new version</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>How the score is built</h3>
+          <div id="breakdown" class="breakdown"></div>
+        </div>
+
+        <div class="two">
+          <div class="card">
+            <h3>Skills you have <span class="count" id="matched-count"></span></h3>
+            <div class="chips" id="matched"></div>
+          </div>
+          <div class="card">
+            <h3>Skills to add <span class="count" id="missing-count"></span></h3>
+            <div class="chips" id="missing"></div>
+          </div>
+        </div>
+
+        <div class="card" id="kw-card">
+          <h3>Words the job post repeats</h3>
+          <p class="muted">Not skills, but terms an ATS may look for.</p>
+          <div class="chips" id="kw"></div>
+        </div>
+
+        <div class="card">
+          <h3>What to fix first</h3>
+          <ul class="tips" id="tips"></ul>
+        </div>
+
+        <div class="card" id="ai-card" hidden>
+          <h3>AI-written tips</h3>
+          <div class="ai-text" id="ai-text"></div>
+        </div>
+
+        <div class="card">
+          <h3>What we read from your resume</h3>
+          <dl class="profile" id="profile"></dl>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Resume Lens is a student project from MIT Academy of Engineering. Scores are guidance, not a guarantee of how any single ATS will rank you.</p>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

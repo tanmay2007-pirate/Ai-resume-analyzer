@@ -1,0 +1,7 @@
+Software Engineer Intern - Full Stack (AI)
+
+We are looking for a motivated intern to join our product team. You will build web features with
+React and FastAPI, design REST APIs, and work with PostgreSQL and Docker. Experience with Python,
+JavaScript, TypeScript and Git is required. Familiarity with machine learning, NLP and AWS is a plus.
+Strong communication, problem solving and teamwork skills are expected. You will write unit tests,
+use CI/CD pipelines and follow Agile practices. 1+ years of project or internship experience preferred.
